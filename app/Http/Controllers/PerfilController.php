@@ -25,7 +25,7 @@ class PerfilController extends Controller
       $request->request->add(['username' => Str::slug($request->username)]);
       
       $this->validate($request, [
-        'username' => ['required', 'unique:users,username'.auth()->user()->username, 'min:3', 'max:20', 'not_in:something,something else'],
+        'username' => ['required', 'unique:users,username,'.auth()->user()->id, 'min:3', 'max:20', 'not_in:twitter,editar-perfil'],
       ]);
 
       if($request->imagen){
@@ -44,7 +44,7 @@ class PerfilController extends Controller
       $usuario = User::find(auth()->user()->id);
 
       $usuario->username = $request->username;
-      $usuario->imagen = $nombreImagen ?? '';
+      $usuario->imagen = $nombreImagen ?? auth()->user()->imagen ?? '';
       $usuario->save();
 
       //Redireccionar
